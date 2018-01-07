@@ -17,10 +17,11 @@ def random_str(len=4):
     return ''.join(random.sample(string.ascii_lowercase + string.digits, len))
 #代理
 def install_proxy():
-    if config['proxy_enable']:
-        proxy_list = list(set(config['proxy'])^set(del_proxy))#剔除不可用的代理
-    else:
-        proxy_list = []
+    # if config['proxy_enable']:
+    #     proxy_list = list(set(config['proxy'])^set(del_proxy))#剔除不可用的代理
+    # else:
+    #     proxy_list = []
+    proxy_list = list(set(config['proxy'])^set(del_proxy))#剔除不可用的代理
     if len(proxy_list) != 0:
         proxy = random.choice(proxy_list)
         proxies = {"http": proxy}  # 设置你想要使用的代理
@@ -37,8 +38,11 @@ def post_req(uri,data):
     header_dict = get_header() #获取header
     req = urllib2.Request(url=uri, data=data, headers=header_dict)
     # 装载代理
-    proxy_info = install_proxy()
-    urllib2.install_opener(proxy_info[0])
+    if config['proxy_enable']:
+        proxy_info = install_proxy()
+        urllib2.install_opener(proxy_info[0])
+    else:
+        proxy_info = [None,None]
     #发送请求
     try:
         res = urllib2.urlopen(req)
@@ -50,7 +54,10 @@ def post_req(uri,data):
             # print "del proxy %s" % proxy_info[1]
             del_proxy.append(proxy_info[1])
     else:
-        print "use %s proxy success" % proxy_info[1]
+        if  proxy_info[1] is not None:
+            print "use %s proxy success" % proxy_info[1]
+        else:
+            print "not use proxy"
 
 config = get_config()
 del_proxy = []

@@ -34,7 +34,7 @@
         {"User-Agent": "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; Avant Browser)",
          "Content-Type": "application/json"}
   ],
-  "proxy_enable": false,
+  "proxy_enable": true,
   "proxy":[
     "94.177.204.9:3128",
     "171.211.26.16:808",
