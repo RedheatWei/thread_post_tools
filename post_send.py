@@ -5,7 +5,7 @@ Created on 2018年1月7日13:17:12
 @author: Redheat
 @Email: qjyyn@qq.com
 '''
-import urllib2,random,string,json,threading,sys
+import urllib2,random,string,json,threading
 def get_config(conf="conf/conf.json"):
     with open(conf) as json_file:
         data = json.load(json_file)
@@ -15,17 +15,32 @@ def get_header():
     return random.choice(header_list)
 def random_str(len=4):
     return ''.join(random.sample(string.ascii_lowercase + string.digits, len))
+def get_proxy():
+    get_proxy_url = config["proxy_get"]
+    try:
+        req = urllib2.Request(url=get_proxy_url)
+        res = urllib2.urlopen(req)
+        res = res.read()
+        dict_res = json.loads(res)
+    except Exception,e:
+        print "get proxy error"
+        return []
+    else:
+        return dict_res["data"]["proxy_list"]
+
 #代理
 def install_proxy():
-    # if config['proxy_enable']:
-    #     proxy_list = list(set(config['proxy'])^set(del_proxy))#剔除不可用的代理
-    # else:
-    #     proxy_list = []
-    proxy_list = list(set(config['proxy'])^set(del_proxy))#剔除不可用的代理
+    if new_proxy :
+        remote_proxy_list = get_proxy()
+    else:
+        remote_proxy_list = []
+    proxy_list = list(set(remote_proxy_list)^set(del_proxy))#剔除不可用的代理
     if len(proxy_list) != 0:
+        new_proxy = False
         proxy = random.choice(proxy_list)
         proxies = {"http": proxy}  # 设置你想要使用的代理
     else:
+        new_proxy = True
         proxy = None
         proxies={}
         # sys.exit("have no proxy")
@@ -59,8 +74,7 @@ def post_req(uri,data):
         else:
             print "not use proxy"
 
-config = get_config()
-del_proxy = []
+
 #主函数
 def main_func():
     ip = config['url']
@@ -73,6 +87,11 @@ def main_func():
         # print textmod
         post_req(ip,textmod)
 
+
+config = get_config()
+# remote_proxy_list = get_proxy()
+new_proxy = True  #flag,是否需要更新proxy
+del_proxy = []
 threads_num = config['threads']
 threads_list = []
 #多线程
