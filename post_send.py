@@ -5,7 +5,7 @@ Created on 2018年1月7日13:17:12
 @author: Redheat
 @Email: qjyyn@qq.com
 '''
-import urllib2,random,string,json,threading,sys
+import urllib2,random,string,json,threading,sys,time
 def get_config(conf="conf/conf.json"):
     with open(conf) as json_file:
         data = json.load(json_file)
@@ -92,3 +92,6 @@ for i in range(threads_num):
     t = threading.Thread(target=main_func)
     t.setDaemon(False)
     t.start()
+while True:
+    time.sleep(10)
+    remote_proxy_list = get_proxy()
