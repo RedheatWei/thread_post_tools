@@ -5,7 +5,7 @@ Created on 2018年1月7日13:17:12
 @author: Redheat
 @Email: qjyyn@qq.com
 '''
-import urllib2,random,string,json,threading
+import urllib2,random,string,json,threading,sys
 def get_config(conf="conf/conf.json"):
     with open(conf) as json_file:
         data = json.load(json_file)
@@ -30,20 +30,14 @@ def get_proxy():
 
 #代理
 def install_proxy():
-    if new_proxy :
-        remote_proxy_list = get_proxy()
-    else:
-        remote_proxy_list = []
     proxy_list = list(set(remote_proxy_list)^set(del_proxy))#剔除不可用的代理
     if len(proxy_list) != 0:
-        new_proxy = False
         proxy = random.choice(proxy_list)
         proxies = {"http": proxy}  # 设置你想要使用的代理
     else:
-        new_proxy = True
         proxy = None
         proxies={}
-        # sys.exit("have no proxy")
+        sys.exit("have no proxy")
     proxy_s = urllib2.ProxyHandler(proxies)
     opener = urllib2.build_opener(proxy_s)
     proxy_info = [opener,proxy]
@@ -89,8 +83,7 @@ def main_func():
 
 
 config = get_config()
-# remote_proxy_list = get_proxy()
-new_proxy = True  #flag,是否需要更新proxy
+remote_proxy_list = get_proxy()
 del_proxy = []
 threads_num = config['threads']
 threads_list = []

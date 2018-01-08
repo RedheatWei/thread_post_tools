@@ -1,5 +1,5 @@
 {
-  "threads":3,
+  "threads":5000,
   "url":"http://www.sszhaojing.com/Home/CheckLogin",
   "post_data":{},
   "browser_header":[
@@ -35,5 +35,5 @@
          "Content-Type": "application/json"}
   ],
   "proxy_enable": true,
-  "proxy_get" : "http://dev.kuaidaili.com/api/getproxy/?orderid=941538620749451&num=100&b_pcchrome=1&b_pcie=1&b_pcff=1&protocol=1&method=2&an_an=1&an_ha=1&quality=1&sort=1&format=json&sep=1"
+  "proxy_get" : "http://dev.kuaidaili.com/api/getproxy/?orderid=941538620749451&num=500&b_pcchrome=1&b_pcie=1&b_pcff=1&protocol=1&method=2&an_an=1&an_ha=1&quality=1&sort=1&format=json&sep=1"
 }
