@@ -93,5 +93,5 @@ for i in range(threads_num):
     t.setDaemon(False)
     t.start()
 while True:
-    time.sleep(10)
+    time.sleep(15)
     remote_proxy_list = get_proxy()
